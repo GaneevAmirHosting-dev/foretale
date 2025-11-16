@@ -1,0 +1,46 @@
+{
+  "characters": [
+    {
+      "id": "elf",
+      "name": "Эльф",
+      "description": "Лесной народ с высокой магической силой",
+      "price": 0,
+      "isPurchased": true,
+      "isDefault": true
+    },
+    {
+      "id": "human",
+      "name": "Человек",
+      "description": "Универсальные бойцы с хорошим здоровьем",
+      "price": 0,
+      "isPurchased": true,
+      "isDefault": true
+    },
+    {
+      "id": "skyzer",
+      "name": "Скайзерновец",
+      "description": "Древняя раса с огромным запасом маны",
+      "price": 500,
+      "isPurchased": false,
+      "isDefault": false
+    },
+    {
+      "id": "dwarf",
+      "name": "Дварф",
+      "description": "Выносливые горные воины",
+      "price": 800,
+      "isPurchased": false,
+      "isDefault": false
+    },
+    {
+      "id": "vampire",
+      "name": "Вампир",
+      "description": "Ночные охотники с вампиризмом",
+      "price": 1200,
+      "isPurchased": false,
+      "isDefault": false
+    }
+  ],
+  "items": [],
+  "skills": []
+}

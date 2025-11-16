@@ -1,0 +1,12 @@
+{
+  "defaultKeybinds": {
+    "settings": "Escape",
+    "stats": "KeyE",
+    "levelup": "KeyU"
+  },
+  "keybindDescriptions": {
+    "settings": "Открыть настройки",
+    "stats": "Статистика персонажа",
+    "levelup": "Меню прокачки"
+  }
+}

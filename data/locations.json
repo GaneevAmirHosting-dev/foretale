@@ -1,0 +1,49 @@
+{
+  "locations": [
+    {
+      "id": "forest",
+      "name": "Лес Эльфийских Духов",
+      "description": "Тенистый лес, населённый лесными существами",
+      "requiredLevel": 1,
+      "monsters": ["goblin", "wolf", "forest_troll"],
+      "background": "linear-gradient(135deg, #1b5e20, #4caf50)",
+      "color": "#4caf50"
+    },
+    {
+      "id": "mountains",
+      "name": "Горы Драконьей Пасти",
+      "description": "Высокие горы, где обитают орки и гоблины",
+      "requiredLevel": 3,
+      "monsters": ["orc", "goblin", "mountain_giant"],
+      "background": "linear-gradient(135deg, #37474f, #78909c)",
+      "color": "#78909c"
+    },
+    {
+      "id": "swamp",
+      "name": "Болото Теней",
+      "description": "Топкие болота, где правят тёмные маги",
+      "requiredLevel": 5,
+      "monsters": ["dark_mage", "swamp_monster", "bog_witch"],
+      "background": "linear-gradient(135deg, #1b5e20, #2e7d32, #004d40)",
+      "color": "#004d40"
+    },
+    {
+      "id": "castle",
+      "name": "Замок Падшего Короля",
+      "description": "Древний замок, наполненный могущественными противниками",
+      "requiredLevel": 8,
+      "monsters": ["dark_knight", "necromancer", "castle_guardian"],
+      "background": "linear-gradient(135deg, #3e2723, #5d4037)",
+      "color": "#5d4037"
+    },
+    {
+      "id": "volcano",
+      "name": "Вулкан Огненной Бездны",
+      "description": "Огненная пустошь с самыми сильными монстрами",
+      "requiredLevel": 12,
+      "monsters": ["fire_elemental", "lava_golem", "volcano_dragon"],
+      "background": "linear-gradient(135deg, #bf360c, #ff5722, #ff9800)",
+      "color": "#ff5722"
+    }
+  ]
+}

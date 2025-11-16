@@ -1,0 +1,1838 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+    color: #fff;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ffd700;
+}
+
+h1 {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: #ffd700;
+}
+
+h2 {
+    color: #ffd700;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
+
+h3 {
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.currency-display {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.header-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Character Creation Screen */
+.character-creation-screen {
+    display: none;
+}
+
+.creation-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(30, 30, 40, 0.9);
+    border-radius: 15px;
+    padding: 30px;
+}
+
+.creation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.input-group input {
+    padding: 12px;
+    border: 2px solid #444;
+    border-radius: 8px;
+    background: rgba(50, 50, 60, 0.8);
+    color: white;
+    font-size: 1rem;
+}
+
+.input-group input:focus {
+    border-color: #ffd700;
+    outline: none;
+}
+
+.races-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.race-option {
+    background: rgba(50, 50, 60, 0.8);
+    border: 2px solid transparent;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.race-option:hover {
+    transform: translateY(-3px);
+    border-color: #ffd700;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.race-option.selected {
+    border-color: #00cc66;
+    background: rgba(0, 204, 102, 0.1);
+}
+
+.race-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.race-option.disabled:hover {
+    transform: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.race-name {
+    font-size: 1.3rem;
+    color: #ffd700;
+    margin-bottom: 8px;
+}
+
+.race-description {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.race-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    font-size: 0.85rem;
+}
+
+.race-stat {
+    display: flex;
+    justify-content: space-between;
+}
+
+.creation-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.create-btn, .new-character-btn, .create-first-btn {
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-btn, .switch-char-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Characters Screen */
+.characters-screen {
+    display: block;
+}
+
+.characters-management {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.shop-btn {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.characters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.character-card {
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.character-card:hover {
+    transform: translateY(-5px);
+    border-color: #ffd700;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.character-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.character-name {
+    font-size: 1.4rem;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.character-level {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.character-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.character-detail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.character-progress {
+    margin-top: 10px;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.85rem;
+}
+
+.progress-bar {
+    height: 20px;
+    background: #333;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+.hp-fill {
+    background: linear-gradient(90deg, #ff0000, #ff6b6b);
+}
+
+.mp-fill {
+    background: linear-gradient(90deg, #0066cc, #3399ff);
+}
+
+.exp-fill {
+    background: linear-gradient(90deg, #00cc66, #66ff99);
+}
+
+.no-characters {
+    text-align: center;
+    padding: 40px;
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px;
+}
+
+.no-characters p {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: #ccc;
+}
+
+/* Game Interface */
+.game-interface {
+    display: none;
+}
+
+.current-character-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(30, 30, 40, 0.8);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.character-badge {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.char-name {
+    font-size: 1.3rem;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.char-race {
+    color: #ccc;
+    font-style: italic;
+}
+
+.char-level {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Location Selector */
+.location-selector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(30, 30, 40, 0.8);
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.location-select-btn {
+    background: linear-gradient(135deg, #0066cc, #3399ff);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.current-location {
+    font-size: 1.1rem;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+/* Game Section */
+.game-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.panel {
+    flex: 1;
+    min-width: 300px;
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.player-panel {
+    border-left: 4px solid #00cc66;
+}
+
+.enemy-panel {
+    border-left: 4px solid #ff6b6b;
+}
+
+.enemy-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.enemy-name {
+    font-size: 1.4rem;
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+.enemy-type {
+    color: #ccc;
+    font-style: italic;
+}
+
+.no-enemy {
+    text-align: center;
+    padding: 30px;
+    color: #ccc;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.stat {
+    background: rgba(50, 50, 60, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Battle Actions */
+.battle-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.find-enemy-btn {
+    background: linear-gradient(135deg, #0066cc, #3399ff);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.attack-btn {
+    background: linear-gradient(135deg, #ff0000, #ff6b6b);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.attack-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+/* Battle Log */
+.battle-log {
+    margin-top: 20px;
+    height: 150px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 5px;
+    font-family: monospace;
+}
+
+.log-entry {
+    margin-bottom: 8px;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.player-log {
+    background: rgba(0, 128, 0, 0.2);
+    border-left: 3px solid #00cc66;
+}
+
+.enemy-log {
+    background: rgba(128, 0, 0, 0.2);
+    border-left: 3px solid #ff6b6b;
+}
+
+.system-log {
+    background: rgba(128, 128, 0, 0.2);
+    border-left: 3px solid #ffd700;
+}
+
+/* Location Screen */
+.location-screen {
+    display: none;
+}
+
+.locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.location-card {
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.location-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.location-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.location-card.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.location-name {
+    font-size: 1.3rem;
+    color: #ffd700;
+    margin-bottom: 10px;
+}
+
+.location-description {
+    color: #ccc;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+
+.location-level {
+    color: #ff6b6b;
+    font-weight: bold;
+}
+
+/* Shop Screen */
+.shop-screen {
+    display: none;
+}
+
+.shop-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin: 25px 0;
+}
+
+.shop-item {
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.shop-item:hover {
+    transform: translateY(-5px);
+    border-color: #ffd700;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.shop-item.purchased {
+    border-color: #00cc66;
+}
+
+.shop-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.shop-item.disabled:hover {
+    transform: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.item-name {
+    font-size: 1.4rem;
+    color: #ffd700;
+    margin-bottom: 10px;
+}
+
+.item-description {
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.item-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.item-stat {
+    display: flex;
+    justify-content: space-between;
+}
+
+.item-price {
+    font-size: 1.2rem;
+    color: #ffd700;
+    margin-bottom: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.buy-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.buy-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+.buy-btn.owned {
+    background: linear-gradient(135deg, #3399ff, #66ccff);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .header-controls {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .current-character-panel,
+    .location-selector {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .characters-management {
+        flex-direction: column;
+    }
+    
+    .battle-actions {
+        flex-direction: column;
+    }
+    
+    .creation-actions {
+        flex-direction: column;
+    }
+    
+    .races-grid,
+    .characters-grid,
+    .locations-grid,
+    .shop-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .game-section {
+        flex-direction: column;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Level Up Screen */
+.level-up-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.level-up-modal {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 600px;
+    width: 90%;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.level-up-modal h2 {
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.level-up-info {
+    text-align: center;
+    margin-bottom: 25px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.level-up-info p {
+    margin: 8px 0;
+    font-size: 1.1rem;
+}
+
+.upgrade-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.upgrade-option {
+    background: rgba(30, 30, 40, 0.9);
+    border: 2px solid #444;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.upgrade-option:hover {
+    border-color: #ffd700;
+    transform: translateY(-3px);
+}
+
+.upgrade-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.upgrade-header h3 {
+    color: #ffd700;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.upgrade-value {
+    color: #00cc66;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.upgrade-option p {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.upgrade-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upgrade-btn:hover {
+    transform: scale(1.05);
+}
+
+.upgrade-btn:disabled {
+    background: #555;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.level-up-actions {
+    text-align: center;
+}
+
+.close-level-up-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* Stat Points Indicator */
+.stat-points-indicator {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 0.9rem;
+}
+
+.character-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.character-name {
+    font-size: 1.4rem;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.character-level-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.upgrade-available {
+    animation: pulse 2s infinite;
+}
+
+.character-actions {
+    display: none;
+    margin-top: 15px;
+    gap: 10px;
+    justify-content: center;
+}
+
+.select-character-btn {
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.select-character-btn:hover {
+    transform: scale(1.05);
+}
+
+.delete-character-btn {
+    background: linear-gradient(135deg, #ff0000, #ff6b6b);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-character-btn:hover {
+    transform: scale(1.05);
+}
+
+.character-card:hover .character-actions {
+    display: flex !important;
+}
+
+/* Стили для санов в панели персонажа */
+.char-sans {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Кнопка детальных характеристик */
+.detailed-stats-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Окно детальных характеристик */
+.detailed-stats-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.detailed-stats-modal {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.detailed-stats-content {
+    background: rgba(30, 30, 40, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.detailed-stat {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: rgba(50, 50, 60, 0.8);
+    border-radius: 5px;
+}
+
+.bonuses-section {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #ffd700;
+}
+
+.bonuses-section h3 {
+    color: #ffd700;
+    margin-bottom: 10px;
+}
+
+.close-detailed-stats-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+/* Стили для кнопок характеристик и прокачки */
+.character-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+.detailed-stats-btn, .upgrade-stats-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    flex: 1;
+    transition: all 0.3s ease;
+}
+
+.detailed-stats-btn:hover, .upgrade-stats-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.upgrade-stats-btn {
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+}
+
+/* Стили для магазина */
+.shop-tabs {
+    display: flex;
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.shop-tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(50, 50, 60, 0.8);
+    border: none;
+    color: #ccc;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.shop-tab:hover {
+    background: rgba(70, 70, 80, 0.8);
+    color: #fff;
+}
+
+.shop-tab.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.shop-content {
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+    min-height: 400px;
+}
+
+.tab-content {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.tab-placeholder {
+    text-align: center;
+    padding: 60px 20px;
+    color: #ccc;
+}
+
+.tab-placeholder h3 {
+    color: #ffd700;
+    margin-bottom: 15px;
+}
+
+/* Стили для сетки персонажей в магазине */
+.shop-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.shop-character-item {
+    background: rgba(50, 50, 60, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.shop-character-item:hover {
+    transform: translateY(-5px);
+    border-color: #ffd700;
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.shop-character-item.purchased {
+    border-color: #00cc66;
+    opacity: 0.8;
+}
+
+.shop-character-item.cannot-afford {
+    opacity: 0.6;
+}
+
+.character-card-shop {
+    position: relative;
+}
+
+.character-header-shop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.character-name-shop {
+    font-size: 1.4rem;
+    color: #ffd700;
+    font-weight: bold;
+}
+
+.character-status {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.status-purchased {
+    color: #00cc66;
+}
+
+.status-price {
+    color: #ffd700;
+}
+
+.character-description-shop {
+    color: #ccc;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.character-stats-shop {
+    background: rgba(40, 40, 50, 0.8);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+}
+
+.character-bonuses {
+    background: rgba(60, 40, 70, 0.8);
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 3px solid #764ba2;
+}
+
+.character-bonuses strong {
+    color: #ffd700;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.bonus-item {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    color: #ccc;
+}
+
+.buy-character-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.buy-character-btn:hover:not(.disabled) {
+    transform: scale(1.05);
+}
+
+.buy-character-btn.disabled {
+    background: #555;
+    cursor: not-allowed;
+}
+
+.purchased-overlay {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 204, 102, 0.2);
+    border-radius: 5px;
+    color: #00cc66;
+    font-weight: bold;
+}
+
+.shop-actions {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+/* Стили для кнопки магазина в карточке персонажа */
+.shop-character-btn {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.shop-character-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+}
+
+/* Обновим контейнер для кнопок действий */
+.character-actions {
+    display: none;
+    margin-top: 15px;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.character-actions button {
+    flex: 1;
+    min-width: 80px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+}
+
+/* Стили для экрана настроек */
+.settings-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.settings-modal {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.settings-modal h2 {
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+/* Вкладки настроек */
+.settings-tabs {
+    display: flex;
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.settings-tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(50, 50, 60, 0.8);
+    border: none;
+    color: #ccc;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.settings-tab:hover {
+    background: rgba(70, 70, 80, 0.8);
+    color: #fff;
+}
+
+.settings-tab.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.settings-content {
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 0 0 10px 10px;
+    padding: 25px;
+    min-height: 300px;
+}
+
+/* Стили для привязок клавиш */
+.keybinds-list {
+    margin-bottom: 25px;
+}
+
+.keybind-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(50, 50, 60, 0.8);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+}
+
+.keybind-label {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.keybind-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 80px;
+    transition: all 0.3s ease;
+}
+
+.keybind-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.keybind-btn.listening {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    animation: pulse 1s infinite;
+}
+
+.keybind-info {
+    background: rgba(40, 40, 50, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #ffd700;
+}
+
+.keybind-info p {
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+.keybind-info ul {
+    margin-left: 20px;
+    color: #ccc;
+}
+
+.keybind-info li {
+    margin-bottom: 5px;
+}
+
+/* Кнопки действий настроек */
+.settings-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+.settings-btn {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.settings-btn.primary {
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+}
+
+/* Уведомления */
+.settings-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #00cc66;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Анимация пульсации для кнопок */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+/* Адаптивность для настроек */
+@media (max-width: 768px) {
+    .settings-modal {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .settings-tabs {
+        flex-direction: column;
+    }
+    
+    .keybind-item {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .settings-actions {
+        flex-direction: column;
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+
+/* Стили для экрана настроек */
+.settings-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.settings-modal {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.settings-modal h2 {
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.settings-modal h3 {
+    color: #ffd700;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ffd700;
+    padding-bottom: 10px;
+}
+
+/* Вкладки настроек */
+.settings-tabs {
+    display: flex;
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.settings-tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(50, 50, 60, 0.8);
+    border: none;
+    color: #ccc;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.settings-tab:hover {
+    background: rgba(70, 70, 80, 0.8);
+    color: #fff;
+}
+
+.settings-tab.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.settings-content {
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 0 0 10px 10px;
+    padding: 25px;
+    min-height: 300px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Стили для привязок клавиш */
+.keybinds-list {
+    margin-bottom: 25px;
+}
+
+.keybind-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(50, 50, 60, 0.8);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+}
+
+.keybind-label {
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.keybind-btn {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    min-width: 80px;
+    transition: all 0.3s ease;
+}
+
+.keybind-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.keybind-btn.listening {
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #333;
+    animation: pulse 1s infinite;
+}
+
+.keybind-info {
+    background: rgba(40, 40, 50, 0.8);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #ffd700;
+}
+
+.keybind-info p {
+    margin-bottom: 10px;
+    color: #ccc;
+}
+
+.keybind-info ul {
+    margin-left: 20px;
+    color: #ccc;
+}
+
+.keybind-info li {
+    margin-bottom: 5px;
+}
+
+/* Кнопки действий настроек */
+.settings-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid #444;
+}
+
+.settings-btn {
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.settings-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.settings-btn.primary {
+    background: linear-gradient(135deg, #00cc66, #66ff99);
+}
+
+/* Уведомления */
+.settings-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #00cc66;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-weight: bold;
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Анимация пульсации для кнопок */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+    }
+    70% {
+        transform: scale(1.05);
+        box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+    }
+}
+
+/* Адаптивность для настроек */
+@media (max-width: 768px) {
+    .settings-modal {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .settings-tabs {
+        flex-direction: column;
+    }
+    
+    .keybind-item {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .settings-actions {
+        flex-direction: column;
+    }
+    
+    .keybind-btn {
+        width: 100%;
+    }
+}
+
+/* Стили для магазина */
+.shop-tabs {
+    display: flex;
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.shop-tab {
+    flex: 1;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    background: rgba(50, 50, 60, 0.8);
+    border: none;
+    color: #ccc;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.shop-tab:hover {
+    background: rgba(70, 70, 80, 0.8);
+    color: #fff;
+}
+
+.shop-tab.active {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.shop-content {
+    background: rgba(30, 30, 40, 0.8);
+    border-radius: 0 0 10px 10px;
+    padding: 25px;
+    min-height: 400px;
+}
+
+.loading {
+    text-align: center;
+    padding: 40px;
+    color: #ccc;
+    font-size: 1.2rem;
+}
+
+.no-items {
+    text-align: center;
+    padding: 40px;
+    color: #ccc;
+    font-size: 1.1rem;
+}
+
+/* Убедимся что настройки видны */
+.settings-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+}
+
+.settings-modal {
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 700px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+    position: relative;
+    z-index: 10001;
+}

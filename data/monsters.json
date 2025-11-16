@@ -1,0 +1,89 @@
+{
+  "monsters": [
+    {
+      "id": "goblin",
+      "name": "Гоблин",
+      "type": "Лесной разбойник",
+      "hp": 40,
+      "mp": 10,
+      "dmg": 8,
+      "xpDrop": 15,
+      "locations": ["forest", "mountains"]
+    },
+    {
+      "id": "wolf",
+      "name": "Лесной волк",
+      "type": "Хищник",
+      "hp": 35,
+      "mp": 5,
+      "dmg": 10,
+      "xpDrop": 12,
+      "locations": ["forest"]
+    },
+    {
+      "id": "forest_troll",
+      "name": "Лесной тролль",
+      "type": "Лесной страж",
+      "hp": 65,
+      "mp": 15,
+      "dmg": 12,
+      "xpDrop": 20,
+      "locations": ["forest"]
+    },
+    {
+      "id": "orc",
+      "name": "Орк",
+      "type": "Горный воин",
+      "hp": 60,
+      "mp": 20,
+      "dmg": 12,
+      "xpDrop": 25,
+      "locations": ["mountains"]
+    },
+    {
+      "id": "mountain_giant",
+      "name": "Горный великан",
+      "type": "Великан",
+      "hp": 100,
+      "mp": 5,
+      "dmg": 18,
+      "xpDrop": 35,
+      "locations": ["mountains"]
+    },
+    {
+      "id": "dark_mage",
+      "name": "Тёмный маг",
+      "type": "Чёрный маг",
+      "hp": 50,
+      "mp": 50,
+      "dmg": 5,
+      "xpDrop": 35,
+      "locations": ["swamp"],
+      "specialAttack": {
+        "name": "Магическая атака",
+        "mpCost": 10,
+        "bonusDmg": 10
+      }
+    },
+    {
+      "id": "swamp_monster",
+      "name": "Болотный монстр",
+      "type": "Тварь болот",
+      "hp": 75,
+      "mp": 25,
+      "dmg": 14,
+      "xpDrop": 30,
+      "locations": ["swamp"]
+    },
+    {
+      "id": "bog_witch",
+      "name": "Болотная ведьма",
+      "type": "Колдунья",
+      "hp": 45,
+      "mp": 60,
+      "dmg": 8,
+      "xpDrop": 40,
+      "locations": ["swamp"]
+    }
+  ]
+}

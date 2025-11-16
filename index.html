@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Боевая система</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>RPG Боевая система</h1>
+            <div class="header-controls">
+                <button class="header-btn" id="settingsBtn">⚙️ Настройки</button>
+                <button class="header-btn" id="manageCharactersBtn">Управление персонажами</button>
+            </div>
+        </header>
+
+        <!-- Экран создания персонажа -->
+        <div class="character-creation-screen" id="characterCreationScreen">
+            <div class="creation-container">
+                <h2>Создание нового персонажа</h2>
+
+                <div class="creation-form">
+                    <div class="input-group">
+                        <label for="characterName">Имя персонажа:</label>
+                        <input type="text" id="characterName" placeholder="Введите имя" maxlength="20">
+                    </div>
+
+                    <div class="race-selection">
+                        <h3>Выберите расу</h3>
+                        <div class="races-grid" id="racesGrid">
+                            <!-- Расы будут загружены из JSON -->
+                        </div>
+                    </div>
+
+                    <div class="creation-actions">
+                        <button class="create-btn" id="createCharacterBtn">Создать персонажа</button>
+                        <button class="back-btn" id="backToCharactersBtn">К списку персонажей</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Экран выбора персонажа -->
+        <div class="characters-screen" id="charactersScreen">
+            <h2>Ваши персонажи</h2>
+
+            <div class="characters-management">
+                <button class="new-character-btn" id="newCharacterBtn">+ Создать нового персонажа</button>
+            </div>
+
+            <div class="characters-grid" id="charactersGrid">
+                <!-- Персонажи будут загружены из сохранений -->
+            </div>
+
+            <div class="no-characters" id="noCharactersMessage" style="display: none;">
+                <p>У вас пока нет персонажей</p>
+                <button class="create-first-btn" id="createFirstCharacterBtn">Создать первого персонажа</button>
+            </div>
+        </div>
+
+        <!-- Основной игровой интерфейс -->
+        <div class="game-interface" id="gameInterface" style="display: none;">
+            <!-- Панель текущего персонажа -->
+            <div class="current-character-panel">
+                <div class="character-badge">
+                    <span class="char-name" id="currentCharName">Имя</span>
+                    <span class="char-race" id="currentCharRace">Раса</span>
+                    <span class="char-level">Ур. <span id="currentCharLevel">1</span></span>
+                    <span class="char-sans">Саны: <span id="currentCharSans">0</span></span>
+                </div>
+                <div class="character-controls">
+                    <button class="shop-btn-header" id="shopBtnHeader">🛒 Магазин</button>
+                    <button class="switch-char-btn" id="switchCharacterBtn">Сменить персонажа</button>
+                </div>
+            </div>
+
+            <!-- Боевой экран -->
+            <div class="battle-screen" id="battleScreen">
+                <div class="location-selector">
+                    <button class="location-select-btn" id="locationSelectBtn">Выбрать локацию</button>
+                    <div class="current-location" id="currentLocationDisplay">Локация не выбрана</div>
+                </div>
+
+                <div class="game-section">
+                    <div class="panel player-panel">
+                        <h2>Ваш персонаж</h2>
+                        <div class="character-info">
+                            <div class="stats">
+                                <div class="stat">
+                                    <div>Уровень: <span id="charLevel">1</span></div>
+                                </div>
+                                <div class="stat">
+                                    <div>Опыт: <span id="charExp">0</span>/<span id="charExpNeeded">20</span></div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill exp-fill" id="charExpBar" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <div>Здоровье: <span id="charHp">100</span>/<span id="charMaxHp">100</span></div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill hp-fill" id="charHpBar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <div>Мана: <span id="charMp">50</span>/<span id="charMaxMp">50</span></div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill mp-fill" id="charMpBar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="character-buttons">
+                                <button class="detailed-stats-btn" id="detailedStatsBtn">📊 Характеристики</button>
+                                <button class="upgrade-stats-btn" id="upgradeStatsBtn">⚡ Прокачка</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel enemy-panel">
+                        <h2>Противник</h2>
+                        <div class="enemy-info" id="enemyInfo" style="display: none;">
+                            <div class="enemy-header">
+                                <div class="enemy-name" id="enemyName">Монстр</div>
+                                <div class="enemy-type" id="enemyType">Тип</div>
+                            </div>
+                            <div class="stats">
+                                <div class="stat">
+                                    <div>Здоровье: <span id="enemyHp">0</span>/<span id="enemyMaxHp">0</span></div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill hp-fill" id="enemyHpBar" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <div>Мана: <span id="enemyMp">0</span>/<span id="enemyMaxMp">0</span></div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill mp-fill" id="enemyMpBar" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div class="stat">
+                                    <div>Урон: <span id="enemyDmg">0</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="no-enemy" id="noEnemyMessage">
+                            <p>Противник не найден</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="battle-actions">
+                    <button id="findEnemyBtn" class="find-enemy-btn">Искать врага</button>
+                    <button id="attackBtn" class="attack-btn" disabled>Атаковать</button>
+                </div>
+
+                <div class="battle-log" id="battleLog">
+                    <div class="log-entry system-log">Выберите локацию и найдите врага для начала боя</div>
+                </div>
+            </div>
+
+            <!-- Экран выбора локации -->
+            <div class="location-screen" id="locationScreen" style="display: none;">
+                <h2>Выберите локацию</h2>
+                <div class="locations-grid" id="locationsGrid">
+                    <!-- Локации будут загружены из JSON -->
+                </div>
+                <button class="back-btn" id="backFromLocationBtn">Назад к бою</button>
+            </div>
+
+            <!-- Магазин -->
+            <div class="shop-screen" id="shopScreen" style="display: none;">
+                <h2>Магазин</h2>
+                <div class="shop-content">
+                    <!-- Вкладки будут созданы динамически -->
+                    <div id="charactersTab" class="tab-content"></div>
+                    <div id="itemsTab" class="tab-content" style="display: none;"></div>
+                    <div id="skillsTab" class="tab-content" style="display: none;"></div>
+                </div>
+                <div class="shop-actions">
+                    <button class="back-btn" id="backFromShopBtn">Назад к бою</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Окно прокачки характеристик -->
+    <div class="level-up-screen" id="levelUpScreen" style="display: none;">
+        <div class="level-up-modal">
+            <h2>Прокачка характеристик</h2>
+            <div class="level-up-info">
+                <p>Доступно очков характеристик: <span id="availablePointsDisplay">0</span></p>
+            </div>
+
+            <div class="upgrade-options">
+                <div class="upgrade-option" data-stat="health">
+                    <div class="upgrade-header">
+                        <h3>Здоровье</h3>
+                        <span class="upgrade-value">+<span id="healthGain">0</span> HP</span>
+                    </div>
+                    <p>Увеличивает максимальное здоровье</p>
+                    <button class="upgrade-btn" data-stat="health">Улучшить</button>
+                </div>
+
+                <div class="upgrade-option" data-stat="mana">
+                    <div class="upgrade-header">
+                        <h3>Мана</h3>
+                        <span class="upgrade-value">+<span id="manaGain">0</span> MP</span>
+                    </div>
+                    <p>Увеличивает максимальную ману</p>
+                    <button class="upgrade-btn" data-stat="mana">Улучшить</button>
+                </div>
+
+                <div class="upgrade-option" data-stat="damage">
+                    <div class="upgrade-header">
+                        <h3>Урон</h3>
+                        <span class="upgrade-value">+<span id="damageGain">0</span> DMG</span>
+                    </div>
+                    <p>Увеличивает наносимый урон</p>
+                    <button class="upgrade-btn" data-stat="damage">Улучшить</button>
+                </div>
+            </div>
+
+            <div class="level-up-actions">
+                <button class="close-level-up-btn" id="closeLevelUpBtn">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Окно детальных характеристик -->
+    <div class="detailed-stats-screen" id="detailedStatsScreen" style="display: none;">
+        <div class="detailed-stats-modal">
+            <h2>Детальные характеристики</h2>
+            <div class="detailed-stats-content" id="detailedStatsContent">
+                <!-- Содержимое будет заполняться динамически -->
+            </div>
+            <div class="detailed-stats-actions">
+                <button class="close-detailed-stats-btn" id="closeDetailedStatsBtn">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Окно настроек -->
+    <div class="settings-screen" id="settingsScreen" style="display: none;">
+        <!-- Содержимое будет создано динамически -->
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>

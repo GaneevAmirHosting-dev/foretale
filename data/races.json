@@ -1,0 +1,104 @@
+{
+  "races": [
+    {
+      "id": "elf",
+      "name": "Эльф",
+      "description": "Лесной народ с высокой магической силой",
+      "baseHp": 90,
+      "baseMp": 70,
+      "baseDmg": 12,
+      "hpRegen": 1,
+      "mpRegen": 3,
+      "levelUp": {
+        "hpGain": 20,
+        "mpGain": 25,
+        "dmgGain": 5,
+        "statPoints": 5
+      },
+      "bonuses": {
+        "mpRegen": 2,
+        "dodgeChance": 0.1
+      }
+    },
+    {
+      "id": "human",
+      "name": "Человек",
+      "description": "Универсальные бойцы с хорошим здоровьем",
+      "baseHp": 110,
+      "baseMp": 40,
+      "baseDmg": 15,
+      "hpRegen": 2,
+      "mpRegen": 1,
+      "levelUp": {
+        "hpGain": 25,
+        "mpGain": 15,
+        "dmgGain": 6,
+        "statPoints": 5
+      },
+      "bonuses": {
+        "hpRegen": 3,
+        "criticalChance": 0.15
+      }
+    },
+    {
+      "id": "skyzer",
+      "name": "Скайзерновец",
+      "description": "Древняя раса с огромным запасом маны",
+      "baseHp": 100,
+      "baseMp": 170,
+      "baseDmg": 17,
+      "hpRegen": 1,
+      "mpRegen": 5,
+      "levelUp": {
+        "hpGain": 18,
+        "mpGain": 35,
+        "dmgGain": 5,
+        "statPoints": 5
+      },
+      "bonuses": {
+        "spellPower": 5,
+        "manaShield": true
+      }
+    },
+    {
+      "id": "dwarf",
+      "name": "Дварф",
+      "description": "Выносливые горные воины",
+      "baseHp": 130,
+      "baseMp": 20,
+      "baseDmg": 18,
+      "hpRegen": 3,
+      "mpRegen": 1,
+      "levelUp": {
+        "hpGain": 30,
+        "mpGain": 10,
+        "dmgGain": 7,
+        "statPoints": 5
+      },
+      "bonuses": {
+        "armor": 5,
+        "stunResistance": 0.3
+      }
+    },
+    {
+      "id": "vampire",
+      "name": "Вампир",
+      "description": "Ночные охотники с вампиризмом",
+      "baseHp": 95,
+      "baseMp": 60,
+      "baseDmg": 16,
+      "hpRegen": 2,
+      "mpRegen": 2,
+      "levelUp": {
+        "hpGain": 22,
+        "mpGain": 20,
+        "dmgGain": 6,
+        "statPoints": 5
+      },
+      "bonuses": {
+        "lifesteal": 0.2,
+        "nightPower": 3
+      }
+    }
+  ]
+}
