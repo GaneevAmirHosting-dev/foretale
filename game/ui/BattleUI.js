@@ -250,38 +250,53 @@ export class BattleUI {
     }
 
     showLevelUpScreen(levelUpData = null) {
-        const levelUpScreen = document.getElementById('levelUpScreen');
-        const availablePointsDisplay = document.getElementById('availablePointsDisplay');
+    const levelUpScreen = document.getElementById('levelUpScreen');
+    const availablePointsDisplay = document.getElementById('availablePointsDisplay');
+    
+    if (levelUpScreen && availablePointsDisplay) {
+        const player = this.gameManager.getCurrentCharacter();
         
-        if (levelUpScreen && availablePointsDisplay) {
-            const player = this.gameManager.getCurrentCharacter();
-            
-            // ПРОВЕРЯЕМ ЕСТЬ ЛИ ОЧКИ ДЛЯ ПРОКАЧКИ
-            if (player.availableStatPoints <= 0) {
-                this.addToLog('Нет доступных очков характеристик для прокачки!', 'system-log');
-                return;
-            }
-            
-            availablePointsDisplay.textContent = player.availableStatPoints;
-            
-            if (levelUpData) {
-                const newLevelDisplay = document.getElementById('newLevelDisplay');
-                if (newLevelDisplay) {
-                    newLevelDisplay.textContent = player.level;
-                }
-            }
-            
-            const healthGain = document.getElementById('healthGain');
-            const manaGain = document.getElementById('manaGain');
-            const damageGain = document.getElementById('damageGain');
-            
-            if (healthGain) healthGain.textContent = player.levelUpConfig.hpGain;
-            if (manaGain) manaGain.textContent = player.levelUpConfig.mpGain;
-            if (damageGain) damageGain.textContent = player.levelUpConfig.dmgGain;
-            
-            levelUpScreen.style.display = 'flex';
+        // ПРОВЕРЯЕМ ЕСТЬ ЛИ ОЧКИ ДЛЯ ПРОКАЧКИ
+        if (player.availableStatPoints <= 0) {
+            this.addToLog('Нет доступных очков характеристик для прокачки!', 'system-log');
+            return;
         }
+        
+        availablePointsDisplay.textContent = player.availableStatPoints;
+        
+        // ОБНОВЛЯЕМ СОСТОЯНИЕ КНОПОК ПРИ ОТКРЫТИИ ЭКРАНА
+        this.updateLevelUpButtons(player);
+        
+        if (levelUpData) {
+            const newLevelDisplay = document.getElementById('newLevelDisplay');
+            if (newLevelDisplay) {
+                newLevelDisplay.textContent = player.level;
+            }
+        }
+        
+        const healthGain = document.getElementById('healthGain');
+        const manaGain = document.getElementById('manaGain');
+        const damageGain = document.getElementById('damageGain');
+        
+        if (healthGain) healthGain.textContent = player.levelUpConfig.hpGain;
+        if (manaGain) manaGain.textContent = player.levelUpConfig.mpGain;
+        if (damageGain) damageGain.textContent = player.levelUpConfig.dmgGain;
+        
+        levelUpScreen.style.display = 'flex';
     }
+}
+
+// НОВЫЙ МЕТОД ДЛЯ ОБНОВЛЕНИЯ КНОПОК
+updateLevelUpButtons(player) {
+    const upgradeButtons = document.querySelectorAll('.upgrade-btn');
+    const hasPoints = player.availableStatPoints > 0;
+    
+    upgradeButtons.forEach(btn => {
+        btn.disabled = !hasPoints;
+        btn.textContent = hasPoints ? 'Улучшить' : 'Нет очков';
+        btn.style.opacity = hasPoints ? '1' : '0.6';
+    });
+}
 
     hideLevelUpScreen() {
         const levelUpScreen = document.getElementById('levelUpScreen');

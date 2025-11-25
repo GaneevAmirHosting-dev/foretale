@@ -46,20 +46,15 @@ export class ShopUI {
             </div>
         `;
 
-        // Сразу показываем вкладку персонажей
         this.showCharactersTab();
     }
 
     initEventListeners() {
-        // Обработчики вкладок магазина
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('shop-tab')) {
                 this.showShopTab(e.target.dataset.tab);
             }
-        });
-
-        // Кнопка назад из магазина
-        document.addEventListener('click', (e) => {
+            
             if (e.target.id === 'backFromShopBtn') {
                 this.gameManager.showBattleScreen();
             }
@@ -67,31 +62,18 @@ export class ShopUI {
     }
 
     showShopTab(tabName) {
-        console.log('Showing shop tab:', tabName);
-        
-        // Обновляем активную вкладку
         document.querySelectorAll('.shop-tab').forEach(tab => {
             tab.classList.remove('active');
         });
         document.querySelector(`.shop-tab[data-tab="${tabName}"]`).classList.add('active');
 
-        // Показываем соответствующее содержимое
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
         document.getElementById(`${tabName}Tab`).classList.add('active');
 
-        // Загружаем содержимое вкладки
-        switch(tabName) {
-            case 'characters':
-                this.showCharactersTab();
-                break;
-            case 'items':
-                // Уже заполнено в HTML
-                break;
-            case 'skills':
-                // Уже заполнено в HTML
-                break;
+        if (tabName === 'characters') {
+            this.showCharactersTab();
         }
     }
 
@@ -121,78 +103,116 @@ export class ShopUI {
             const shopData = this.gameManager.getShopData();
             const playerSans = this.gameManager.getCurrentCharacter()?.personalSans || 0;
 
-            let html = '';
+            shopCharactersGrid.innerHTML = '';
+            
             shopData.characters.forEach(shopItem => {
                 const raceData = this.gameManager.getRaceData(shopItem.id);
                 if (raceData) {
                     const shopItemElement = this.createShopCharacterItem(shopItem, raceData, playerSans);
-                    html += shopItemElement;
+                    shopCharactersGrid.appendChild(shopItemElement);
                 }
             });
 
-            shopCharactersGrid.innerHTML = html || '<div class="no-items">Нет доступных рас</div>';
+            if (shopCharactersGrid.children.length === 0) {
+                shopCharactersGrid.innerHTML = '<div class="no-items">Нет доступных рас</div>';
+            }
         }, 100);
     }
 
     createShopCharacterItem(shopItem, raceData, playerSans) {
-        const isPurchased = shopItem.isPurchased;
-        const canAfford = playerSans >= shopItem.price;
+        const shopItemElement = document.createElement('div');
+        shopItemElement.className = `shop-character-item ${shopItem.isPurchased ? 'purchased' : ''} ${!shopItem.isPurchased && playerSans < shopItem.price ? 'cannot-afford' : ''}`;
         
-        return `
-            <div class="shop-character-item ${isPurchased ? 'purchased' : ''} ${!isPurchased && !canAfford ? 'cannot-afford' : ''}">
-                <div class="character-card-shop">
-                    <div class="character-header-shop">
-                        <div class="character-name-shop">${raceData.name}</div>
-                        <div class="character-status">
-                            ${isPurchased ? 
-                                '<span class="status-purchased">✓ Куплено</span>' : 
-                                `<span class="status-price">${shopItem.price} санов</span>`
-                            }
-                        </div>
+        shopItemElement.innerHTML = `
+            <div class="character-card-shop">
+                <div class="character-header-shop">
+                    <div class="character-name-shop">${raceData.name}</div>
+                    <div class="character-status">
+                        ${shopItem.isPurchased ? 
+                            '<span class="status-purchased">✓ Куплено</span>' : 
+                            `<span class="status-price">${shopItem.price} санов</span>`
+                        }
                     </div>
-                    <div class="character-description-shop">${raceData.description}</div>
-                    <div class="character-stats-shop">
-                        <div class="stat-row">
-                            <span>❤️ Здоровье:</span>
-                            <span>${raceData.baseHp}</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>🔮 Мана:</span>
-                            <span>${raceData.baseMp}</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>⚔️ Урон:</span>
-                            <span>${raceData.baseDmg}</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>🩸 Реген HP:</span>
-                            <span>${raceData.hpRegen || 1}/сек</span>
-                        </div>
-                        <div class="stat-row">
-                            <span>💫 Реген MP:</span>
-                            <span>${raceData.mpRegen || 1}/сек</span>
-                        </div>
-                    </div>
-                    ${!isPurchased ? `
-                        <div class="character-bonuses">
-                            <strong>🎁 Бонусы:</strong>
-                            ${Object.entries(raceData.bonuses || {}).map(([key, value]) => 
-                                `<div class="bonus-item">${this.getBonusName(key)}: ${value}</div>`
-                            ).join('')}
-                        </div>
-                        <button class="buy-character-btn ${!canAfford ? 'disabled' : ''}" 
-                                data-item-id="${shopItem.id}" 
-                                ${!canAfford ? 'disabled' : ''}>
-                            ${!canAfford ? '❌ Недостаточно санов' : '💰 Купить'}
-                        </button>
-                    ` : `
-                        <div class="purchased-overlay">
-                            <span>✅ Доступно для создания</span>
-                        </div>
-                    `}
                 </div>
+                <div class="character-description-shop">${raceData.description}</div>
+                <div class="character-stats-shop">
+                    <div class="stat-row">
+                        <span>❤️ Здоровье:</span>
+                        <span>${raceData.baseHp}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>🔮 Мана:</span>
+                        <span>${raceData.baseMp}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>⚔️ Урон:</span>
+                        <span>${raceData.baseDmg}</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>🩸 Реген HP:</span>
+                        <span>${raceData.hpRegen || 1}/сек</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>💫 Реген MP:</span>
+                        <span>${raceData.mpRegen || 1}/сек</span>
+                    </div>
+                </div>
+                ${!shopItem.isPurchased ? `
+                    <div class="character-bonuses">
+                        <strong>🎁 Бонусы:</strong>
+                        ${Object.entries(raceData.bonuses || {}).map(([key, value]) => 
+                            `<div class="bonus-item">${this.getBonusName(key)}: ${value}</div>`
+                        ).join('')}
+                    </div>
+                    <button class="buy-character-btn ${playerSans < shopItem.price ? 'disabled' : ''}" 
+                            data-item-id="${shopItem.id}" 
+                            ${playerSans < shopItem.price ? 'disabled' : ''}>
+                        ${playerSans < shopItem.price ? '❌ Недостаточно санов' : '💰 Купить'}
+                    </button>
+                ` : `
+                    <div class="purchased-overlay">
+                        <span>✅ Доступно для создания</span>
+                    </div>
+                `}
             </div>
         `;
+
+        if (!shopItem.isPurchased) {
+            const buyBtn = shopItemElement.querySelector('.buy-character-btn');
+            if (buyBtn && !buyBtn.disabled) {
+                buyBtn.addEventListener('click', () => {
+                    this.purchaseCharacter(shopItem, raceData);
+                });
+            }
+        }
+
+        return shopItemElement;
+    }
+
+    // ДОБАВЛЯЕМ МЕТОД purchaseCharacter
+    purchaseCharacter(shopItem, raceData) {
+        const player = this.gameManager.getCurrentCharacter();
+        if (!player) {
+            alert('Сначала выберите персонажа!');
+            return;
+        }
+
+        if (player.personalSans < shopItem.price) {
+            alert(`Недостаточно санов! Нужно: ${shopItem.price}`);
+            return;
+        }
+
+        if (confirm(`Купить расу "${raceData.name}" за ${shopItem.price} санов?`)) {
+            // Списываем саны
+            player.personalSans -= shopItem.price;
+            shopItem.isPurchased = true;
+            
+            // Обновляем отображение
+            this.loadShopCharacters();
+            this.gameManager.updateCharacterDisplay();
+            
+            alert(`Поздравляем! Вы приобрели расу "${raceData.name}"! Теперь вы можете создавать персонажей этой расы.`);
+        }
     }
 
     getBonusName(bonusKey) {
@@ -212,9 +232,6 @@ export class ShopUI {
     }
 
     showShopScreen() {
-        console.log('Showing shop screen');
-        
-        // Скрываем все экраны
         const screens = [
             'battleScreen', 
             'locationScreen', 
@@ -228,7 +245,6 @@ export class ShopUI {
             if (screen) screen.style.display = 'none';
         });
         
-        // Показываем магазин
         if (this.shopScreen) {
             this.shopScreen.style.display = 'block';
             this.showCharactersTab();

@@ -268,6 +268,39 @@ export class GameManager {
         return this.currentMonster;
     }
 
+    // Обработчики клавиш
+initKeyHandlers() {
+    document.addEventListener('keydown', (e) => {
+        // Если активен input, textarea или contenteditable - игнорируем горячие клавиши
+        const activeElement = document.activeElement;
+        const isInputActive = activeElement.tagName === 'INPUT' || 
+                             activeElement.tagName === 'TEXTAREA' ||
+                             activeElement.isContentEditable;
+        
+        if (isInputActive) {
+            return; // Не обрабатываем горячие клавиши когда пользователь вводит текст
+        }
+        
+        // Настройки (Escape)
+        if (e.code === this.keybinds.settings) {
+            e.preventDefault();
+            this.showSettings();
+        }
+        
+        // Статистика (E) - только когда есть персонаж
+        if (e.code === this.keybinds.stats && this.player) {
+            e.preventDefault();
+            this.battleUI.showDetailedStats();
+        }
+        
+        // Прокачка (U) - только когда есть персонаж и очки
+        if (e.code === this.keybinds.levelup && this.player && this.player.availableStatPoints > 0) {
+            e.preventDefault();
+            this.battleUI.showLevelUpScreen();
+        }
+    });
+}
+
     performAttack() {
         if (!this.currentMonster) return {};
         
