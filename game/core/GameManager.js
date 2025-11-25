@@ -302,77 +302,83 @@ initKeyHandlers() {
 }
 
     performAttack() {
-        if (!this.currentMonster) return {};
+    if (!this.currentMonster) return {};
+    
+    const result = {};
+    
+    // Атака игрока
+    const playerDamage = this.player.dmg;
+    this.currentMonster.hp -= playerDamage;
+    result.playerAttack = `Вы атакуете и наносите ${playerDamage} урона!`;
+    
+    // Проверка на победу
+    if (this.currentMonster.hp <= 0) {
+        const xpReward = this.currentMonster.xpDrop;
         
-        const result = {};
+        // Используем старую систему получения опыта
+        this.player.exp += xpReward;
+        let levelsGained = 0;
         
-        // Атака игрока
-        const playerDamage = this.player.dmg;
-        this.currentMonster.hp -= playerDamage;
-        result.playerAttack = `Вы атакуете и наносите ${playerDamage} урона!`;
-        
-        // Проверка на победу
-        if (this.currentMonster.hp <= 0) {
-            const xpReward = this.currentMonster.xpDrop;
+        // Проверяем несколько уровней
+        while (this.player.exp >= this.player.expForLevel) {
+            this.player.exp -= this.player.expForLevel;
+            this.player.level++;
+            this.player.expForLevel = Math.floor(this.player.expForLevel * 1.2);
+            this.player.availableStatPoints += 5;
+            levelsGained++;
             
-            // Используем старую систему получения опыта
-            this.player.exp += xpReward;
-            let levelsGained = 0;
-            
-            // Проверяем несколько уровней
-            while (this.player.exp >= this.player.expForLevel) {
-                this.player.exp -= this.player.expForLevel;
-                this.player.level++;
-                this.player.expForLevel = Math.floor(this.player.expForLevel * 1.2);
-                this.player.availableStatPoints += 5;
-                levelsGained++;
-                
-                // ПОЛНОЕ ВОССТАНОВЛЕНИЕ ПРИ УРОВНЕ
-                this.characterManager.fullRestoreOnLevelUp(this.player.id);
-            }
-            
-            if (levelsGained > 0) {
-                result.levelUp = {
-                    levelsGained: levelsGained,
-                    gains: {
-                        hp: this.player.levelUpConfig.hpGain * levelsGained,
-                        mp: this.player.levelUpConfig.mpGain * levelsGained,
-                        dmg: this.player.levelUpConfig.dmgGain * levelsGained,
-                        statPoints: 5 * levelsGained
-                    }
-                };
-                
-                // АВТОМАТИЧЕСКИ ПОКАЗЫВАЕМ ЭКРАН ПРОКАЧКИ ПРИ ПОЛУЧЕНИИ ОЧКОВ
-                setTimeout(() => {
-                    if (this.player.availableStatPoints > 0) {
-                        this.battleUI.showLevelUpScreen();
-                    }
-                }, 1000);
-            }
-            
-            const sansReward = Math.floor(xpReward / 2);
-            this.characterManager.addSansToCharacter(this.characterManager.currentCharacterId, sansReward);
-            
-            result.victory = `Вы победили ${this.currentMonster.name} и получили ${xpReward} опыта и ${sansReward} санов!`;
-            
-            this.currentMonster = null;
-            this.characterManager.updateCharacterProgress(this.player);
-            return result;
+            // ПОЛНОЕ ВОССТАНОВЛЕНИЕ ПРИ УРОВНЕ
+            this.characterManager.fullRestoreOnLevelUp(this.player.id);
         }
         
-        // Атака монстра
-        const enemyDamage = this.currentMonster.dmg;
-        this.player.hp -= enemyDamage;
-        result.enemyAttack = `${this.currentMonster.name} атакует и наносит ${enemyDamage} урона!`;
-        
-        // Проверка на поражение
-        if (this.player.hp <= 0) {
-            result.playerDead = true;
+        if (levelsGained > 0) {
+            result.levelUp = {
+                levelsGained: levelsGained,
+                gains: {
+                    hp: this.player.levelUpConfig.hpGain * levelsGained,
+                    mp: this.player.levelUpConfig.mpGain * levelsGained,
+                    dmg: this.player.levelUpConfig.dmgGain * levelsGained,
+                    statPoints: 5 * levelsGained
+                }
+            };
+            
+            // АВТОМАТИЧЕСКИ ПОКАЗЫВАЕМ ЭКРАН ПРОКАЧКИ ПРИ ПОЛУЧЕНИИ ОЧКОВ
+            setTimeout(() => {
+                if (this.player.availableStatPoints > 0) {
+                    console.log('Auto-showing level up screen with points:', this.player.availableStatPoints);
+                    this.battleUI.showLevelUpScreen();
+                    
+                    // ДВОЙНАЯ ПРОВЕРКА ЧЕРЕЗ НЕСКОЛЬКО МС
+                    setTimeout(() => {
+                        this.battleUI.updateLevelUpButtons();
+                    }, 100);
+                }
+            }, 1000);
         }
         
+        const sansReward = Math.floor(xpReward / 2);
+        this.characterManager.addSansToCharacter(this.characterManager.currentCharacterId, sansReward);
+        
+        result.victory = `Вы победили ${this.currentMonster.name} и получили ${xpReward} опыта и ${sansReward} санов!`;
+        
+        this.currentMonster = null;
         this.characterManager.updateCharacterProgress(this.player);
         return result;
     }
+    
+    // Атака монстра
+    const enemyDamage = this.currentMonster.dmg;
+    this.player.hp -= enemyDamage;
+    result.enemyAttack = `${this.currentMonster.name} атакует и наносит ${enemyDamage} урона!`;
+    
+    // Проверка на поражение
+    if (this.player.hp <= 0) {
+        result.playerDead = true;
+    }
+    
+    this.characterManager.updateCharacterProgress(this.player);
+    return result;
+}
 
     // UI методы
     loadCharacterIntoGame(characterData) {

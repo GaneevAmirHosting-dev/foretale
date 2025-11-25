@@ -63,15 +63,15 @@ export class BattleUI {
             });
         }
 
-        document.addEventListener('click', (e) => {
-        if (e.target.classList.contains('upgrade-btn')) {
-            const stat = e.target.closest('.upgrade-option')?.dataset.stat;
-            if (stat) {
-                console.log('Upgrade button clicked for stat:', stat);
+        // ОБНОВЛЕННЫЕ обработчики для кнопок прокачки
+        const upgradeButtons = document.querySelectorAll('.upgrade-btn');
+        upgradeButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const stat = e.target.closest('.upgrade-option').dataset.stat;
+                console.log('Upgrade button clicked for:', stat);
                 this.upgradeStat(stat);
-            }
-        }
-    });
+            });
+        });
 
         const closeLevelUpBtn = document.getElementById('closeLevelUpBtn');
         if (closeLevelUpBtn) {
@@ -202,123 +202,138 @@ export class BattleUI {
     }
 
     upgradeStat(statType) {
-    const player = this.gameManager.getCurrentCharacter();
-    if (!player || player.availableStatPoints <= 0) {
-        console.log('Cannot upgrade: no player or no points');
-        return;
-    }
-
-    let success = false;
-    let message = '';
-
-    console.log('Upgrading stat:', statType, 'available points:', player.availableStatPoints);
-
-    switch (statType) {
-        case 'health':
-            const hpGain = player.levelUpConfig.hpGain;
-            player.maxHp += hpGain;
-            player.hp += hpGain;
-            player.availableStatPoints--;
-            player.spentStatPoints++;
-            success = true;
-            message = `Здоровье увеличено на ${hpGain}!`;
-            break;
-            
-        case 'mana':
-            const mpGain = player.levelUpConfig.mpGain;
-            player.maxMp += mpGain;
-            player.mp += mpGain;
-            player.availableStatPoints--;
-            player.spentStatPoints++;
-            success = true;
-            message = `Мана увеличена на ${mpGain}!`;
-            break;
-            
-        case 'damage':
-            const dmgGain = player.levelUpConfig.dmgGain;
-            player.dmg += dmgGain;
-            player.availableStatPoints--;
-            player.spentStatPoints++;
-            success = true;
-            message = `Урон увеличен на ${dmgGain}!`;
-            break;
-    }
-
-    if (success) {
-        console.log('Upgrade successful, remaining points:', player.availableStatPoints);
-        this.addToLog(message, 'system-log');
-        this.updatePlayerStats(player);
-        this.updateLevelUpDisplay();
-        this.gameManager.characterManager.updateCharacterProgress(player);
-        
-        // Скрываем экран прокачки если очки закончились
-        if (player.availableStatPoints <= 0) {
-            setTimeout(() => {
-                this.hideLevelUpScreen();
-            }, 1000);
-        }
-    }
-}
-
-    showLevelUpScreen(levelUpData = null) {
-    const levelUpScreen = document.getElementById('levelUpScreen');
-    const availablePointsDisplay = document.getElementById('availablePointsDisplay');
-    
-    if (levelUpScreen && availablePointsDisplay) {
         const player = this.gameManager.getCurrentCharacter();
         
-        console.log('Showing level up screen, available points:', player.availableStatPoints);
-        
-        // ПРОВЕРЯЕМ ЕСТЬ ЛИ ОЧКИ ДЛЯ ПРОКАЧКИ
-        if (player.availableStatPoints <= 0) {
-            console.log('No stat points available');
-            this.addToLog('Нет доступных очков характеристик для прокачки!', 'system-log');
+        // ПРЯМАЯ ПРОВЕРКА ПЕРЕД ПРОКАЧКОЙ
+        if (!player) {
+            console.log('No player found for upgrade');
             return;
         }
         
-        availablePointsDisplay.textContent = player.availableStatPoints;
-        
-        // ОБНОВЛЯЕМ СОСТОЯНИЕ КНОПОК ПРИ ОТКРЫТИИ ЭКРАНА
-        this.updateLevelUpButtons(player);
-        
-        if (levelUpData) {
-            const newLevelDisplay = document.getElementById('newLevelDisplay');
-            if (newLevelDisplay) {
-                newLevelDisplay.textContent = player.level;
+        if (player.availableStatPoints <= 0) {
+            console.log('No stat points available for upgrade');
+            this.addToLog('Нет очков характеристик для прокачки!', 'system-log');
+            this.updateLevelUpButtons(); // Принудительно обновляем кнопки
+            return;
+        }
+
+        console.log('Starting upgrade for:', statType, 'available points:', player.availableStatPoints);
+
+        let success = false;
+        let message = '';
+
+        switch (statType) {
+            case 'health':
+                const hpGain = player.levelUpConfig.hpGain;
+                player.maxHp += hpGain;
+                player.hp += hpGain;
+                player.availableStatPoints--;
+                player.spentStatPoints++;
+                success = true;
+                message = `Здоровье увеличено на ${hpGain}!`;
+                break;
+                
+            case 'mana':
+                const mpGain = player.levelUpConfig.mpGain;
+                player.maxMp += mpGain;
+                player.mp += mpGain;
+                player.availableStatPoints--;
+                player.spentStatPoints++;
+                success = true;
+                message = `Мана увеличена на ${mpGain}!`;
+                break;
+                
+            case 'damage':
+                const dmgGain = player.levelUpConfig.dmgGain;
+                player.dmg += dmgGain;
+                player.availableStatPoints--;
+                player.spentStatPoints++;
+                success = true;
+                message = `Урон увеличен на ${dmgGain}!`;
+                break;
+        }
+
+        if (success) {
+            console.log('Upgrade successful! Remaining points:', player.availableStatPoints);
+            this.addToLog(message, 'system-log');
+            
+            // ОБНОВЛЯЕМ ВСЕ ДИСПЛЕИ
+            this.updatePlayerStats(player);
+            this.updateLevelUpDisplay();
+            this.gameManager.characterManager.updateCharacterProgress(player);
+            
+            // НЕМЕДЛЕННО ОБНОВЛЯЕМ КНОПКИ
+            this.updateLevelUpButtons();
+            
+            // Скрываем экран если очки закончились
+            if (player.availableStatPoints <= 0) {
+                setTimeout(() => {
+                    this.hideLevelUpScreen();
+                }, 1500);
             }
         }
-        
-        const healthGain = document.getElementById('healthGain');
-        const manaGain = document.getElementById('manaGain');
-        const damageGain = document.getElementById('damageGain');
-        
-        if (healthGain) healthGain.textContent = player.levelUpConfig.hpGain;
-        if (manaGain) manaGain.textContent = player.levelUpConfig.mpGain;
-        if (damageGain) damageGain.textContent = player.levelUpConfig.dmgGain;
-        
-        levelUpScreen.style.display = 'flex';
-        
-        // ДОБАВЛЯЕМ ДОПОЛНИТЕЛЬНУЮ ПРОВЕРКУ
-        setTimeout(() => {
-            this.updateLevelUpButtons(player);
-        }, 100);
     }
-}
 
-// ОБНОВЛЕННЫЙ МЕТОД ДЛЯ ОБНОВЛЕНИЯ КНОПОК
-updateLevelUpButtons(player) {
-    const upgradeButtons = document.querySelectorAll('.upgrade-btn');
-    const hasPoints = player && player.availableStatPoints > 0;
-    
-    console.log('Updating buttons, has points:', hasPoints, 'points:', player?.availableStatPoints);
-    
-    upgradeButtons.forEach(btn => {
-        btn.disabled = !hasPoints;
-        btn.textContent = hasPoints ? 'Улучшить' : 'Нет очков';
-        btn.style.opacity = hasPoints ? '1' : '0.6';
-        btn.style.cursor = hasPoints ? 'pointer' : 'not-allowed';
-    });
-}
+    showLevelUpScreen(levelUpData = null) {
+        const levelUpScreen = document.getElementById('levelUpScreen');
+        const availablePointsDisplay = document.getElementById('availablePointsDisplay');
+        
+        if (levelUpScreen && availablePointsDisplay) {
+            const player = this.gameManager.getCurrentCharacter();
+            
+            if (!player) {
+                console.log('No player found');
+                return;
+            }
+            
+            console.log('Opening level up screen. Available points:', player.availableStatPoints);
+            
+            // ПРОВЕРЯЕМ ЕСТЬ ЛИ ОЧКИ ДЛЯ ПРОКАЧКИ
+            if (player.availableStatPoints <= 0) {
+                this.addToLog('Нет доступных очков характеристик для прокачки!', 'system-log');
+                return;
+            }
+            
+            availablePointsDisplay.textContent = player.availableStatPoints;
+            
+            // ОБНОВЛЯЕМ ВСЕ ДАННЫЕ
+            const newLevelDisplay = document.getElementById('newLevelDisplay');
+            const healthGain = document.getElementById('healthGain');
+            const manaGain = document.getElementById('manaGain');
+            const damageGain = document.getElementById('damageGain');
+            
+            if (newLevelDisplay) newLevelDisplay.textContent = player.level;
+            if (healthGain) healthGain.textContent = player.levelUpConfig.hpGain;
+            if (manaGain) manaGain.textContent = player.levelUpConfig.mpGain;
+            if (damageGain) damageGain.textContent = player.levelUpConfig.dmgGain;
+            
+            // ОБНОВЛЯЕМ СОСТОЯНИЕ КНОПОК
+            this.updateLevelUpButtons();
+            
+            levelUpScreen.style.display = 'flex';
+            
+            // ДВОЙНАЯ ПРОВЕРКА ЧЕРЕЗ НЕСКОЛЬКО МС
+            setTimeout(() => {
+                this.updateLevelUpButtons();
+            }, 50);
+        }
+    }
+
+    // ОБНОВЛЕННЫЙ МЕТОД ДЛЯ ОБНОВЛЕНИЯ КНОПОК
+    updateLevelUpButtons() {
+        const player = this.gameManager.getCurrentCharacter();
+        const upgradeButtons = document.querySelectorAll('.upgrade-btn');
+        const hasPoints = player && player.availableStatPoints > 0;
+        
+        console.log('Updating buttons - has points:', hasPoints, 'count:', player?.availableStatPoints);
+        
+        upgradeButtons.forEach(btn => {
+            btn.disabled = !hasPoints;
+            btn.textContent = hasPoints ? 'Улучшить' : 'Нет очков';
+            btn.style.opacity = hasPoints ? '1' : '0.6';
+            btn.style.cursor = hasPoints ? 'pointer' : 'not-allowed';
+        });
+    }
 
     hideLevelUpScreen() {
         const levelUpScreen = document.getElementById('levelUpScreen');
@@ -328,15 +343,15 @@ updateLevelUpButtons(player) {
     }
 
     updateLevelUpDisplay() {
-    const player = this.gameManager.getCurrentCharacter();
-    const availablePointsDisplay = document.getElementById('availablePointsDisplay');
-    if (availablePointsDisplay) {
-        availablePointsDisplay.textContent = player.availableStatPoints;
+        const player = this.gameManager.getCurrentCharacter();
+        const availablePointsDisplay = document.getElementById('availablePointsDisplay');
+        if (availablePointsDisplay) {
+            availablePointsDisplay.textContent = player.availableStatPoints;
+        }
+        
+        // ВСЕГДА ОБНОВЛЯЕМ КНОПКИ
+        this.updateLevelUpButtons();
     }
-    
-    // ОБНОВЛЯЕМ КНОПКИ С ПРОВЕРКОЙ ИГРОКА
-    this.updateLevelUpButtons(player);
-}
 
     showDetailedStats() {
         const player = this.gameManager.getCurrentCharacter();
