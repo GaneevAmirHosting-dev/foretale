@@ -207,6 +207,7 @@ export class BattleUI {
         // ПРЯМАЯ ПРОВЕРКА ПЕРЕД ПРОКАЧКОЙ
         if (!player) {
             console.log('No player found for upgrade');
+            this.addToLog('Персонаж не найден!', 'system-log');
             return;
         }
         
@@ -281,8 +282,10 @@ export class BattleUI {
         if (levelUpScreen && availablePointsDisplay) {
             const player = this.gameManager.getCurrentCharacter();
             
+            // ПРОВЕРКА НА НАЛИЧИЕ ИГРОКА
             if (!player) {
-                console.log('No player found');
+                console.log('No player found for level up screen');
+                this.addToLog('Персонаж не выбран!', 'system-log');
                 return;
             }
             
@@ -323,9 +326,22 @@ export class BattleUI {
     updateLevelUpButtons() {
         const player = this.gameManager.getCurrentCharacter();
         const upgradeButtons = document.querySelectorAll('.upgrade-btn');
-        const hasPoints = player && player.availableStatPoints > 0;
         
-        console.log('Updating buttons - has points:', hasPoints, 'count:', player?.availableStatPoints);
+        // ЕСЛИ ИГРОКА НЕТ - ДЕЛАЕМ КНОПКИ НЕАКТИВНЫМИ
+        if (!player) {
+            console.log('No player found for button update');
+            upgradeButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.textContent = 'Нет персонажа';
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'not-allowed';
+            });
+            return;
+        }
+        
+        const hasPoints = player.availableStatPoints > 0;
+        
+        console.log('Updating buttons - has points:', hasPoints, 'count:', player.availableStatPoints);
         
         upgradeButtons.forEach(btn => {
             btn.disabled = !hasPoints;
@@ -345,7 +361,7 @@ export class BattleUI {
     updateLevelUpDisplay() {
         const player = this.gameManager.getCurrentCharacter();
         const availablePointsDisplay = document.getElementById('availablePointsDisplay');
-        if (availablePointsDisplay) {
+        if (availablePointsDisplay && player) {
             availablePointsDisplay.textContent = player.availableStatPoints;
         }
         
@@ -355,7 +371,10 @@ export class BattleUI {
 
     showDetailedStats() {
         const player = this.gameManager.getCurrentCharacter();
-        if (!player) return;
+        if (!player) {
+            this.addToLog('Персонаж не выбран!', 'system-log');
+            return;
+        }
 
         const detailedStatsScreen = document.getElementById('detailedStatsScreen');
         const detailedStatsContent = document.getElementById('detailedStatsContent');
