@@ -247,6 +247,32 @@
     </div>
 
     <script type="module" src="./main.js"></script>
+
+
+
+    <script type="module">
+    import { Game } from './game/Game.js';
+    
+    // Проверяем что все загружено
+    window.addEventListener('DOMContentLoaded', () => {
+        console.log('DOM loaded, initializing game...');
+        try {
+            window.rpgGame = new Game();
+            console.log('Game initialized successfully');
+        } catch (error) {
+            console.error('Error initializing game:', error);
+        }
+    });
+    
+    // Логируем ошибки загрузки модулей
+    window.addEventListener('error', (e) => {
+        console.error('Script loading error:', e);
+    });
+</script>
+
+
+
+
 </body>
 
 </html>
